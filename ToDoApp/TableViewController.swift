@@ -47,6 +47,7 @@ class TableViewController: UITableViewController {
         cell.textLabel?.text = currentItem["Name"] as? String
         // Configure the cell...
         
+        //галочка для вида отмеченного задания
         if (currentItem["isCompleted"] as? Bool) == true {
             cell.accessoryType = .checkmark
         } else {
@@ -77,7 +78,20 @@ class TableViewController: UITableViewController {
         }    
     }
     
-
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if changeState(at: indexPath.row) {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        } else {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .none
+        }
+        
+        //обновление таблицы
+       // tableView.reloadData()
+        
+        
+    }
     /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
