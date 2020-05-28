@@ -10,10 +10,36 @@ import UIKit
 
 class TableViewController: UITableViewController {
 
+    
+    ///редактирование записей кнопка
+    @IBAction func pushEditing(_ sender: Any) {
+        tableView.setEditing(true, animated: true)
+    }
+    
+    ///добавление записей кнопка
     @IBAction func pushAddAction(_ sender: Any) {
-        addItem(nameItem: "New Item")
-        tableView.reloadData()
+        let allertController = UIAlertController(title: "Create new note", message: nil, preferredStyle: .alert)
+        allertController.addTextField { (textField) in
+            textField.placeholder = "New note"
+        }
+        
+        let alertActionCancel = UIAlertAction(title: "Cancel", style: .default) { (alert) in
+        }
+        
+        //добавление новой записи
+        let alertActionCreate = UIAlertAction(title: "Create", style: .default) { (alert) in
+            
+            //доступ к текстовому полю после нажатия кнопки
+            let newNote = allertController.textFields![0].text
+            addItem(nameItem: newNote!)//разворачиваем значение
+            self.tableView.reloadData()
+            
+            //self чтобы обращались к самому классу
+        }
         //print(toDoList)
+        allertController.addAction(alertActionCancel)
+        allertController.addAction(alertActionCreate)
+        present(allertController, animated: true, completion: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,12 +118,12 @@ class TableViewController: UITableViewController {
         
         
     }
-    /*
+    
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
 
     }
-    */
+    
 
     /*
     // Override to support conditional rearranging of the table view.

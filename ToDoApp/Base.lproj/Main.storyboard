@@ -39,11 +39,20 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="ToDo" id="ajh-rp-kIf">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="YAw-ba-Jhk">
-                            <connections>
-                                <action selector="pushAddAction:" destination="DwS-wG-D5f" id="Gdg-Bs-ZIi"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="YAw-ba-Jhk">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="pushAddAction:" destination="DwS-wG-D5f" id="Gdg-Bs-ZIi"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Edit" image="pencil" catalog="system" id="FuB-aa-f7a">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="pushEditing:" destination="DwS-wG-D5f" id="D9z-QG-EI3"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UDG-kn-mJJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -69,4 +78,7 @@
             <point key="canvasLocation" x="73.913043478260875" y="59.598214285714285"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="pencil" catalog="system" width="128" height="113"/>
+    </resources>
 </document>
