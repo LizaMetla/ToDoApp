@@ -11,12 +11,12 @@ import UIKit
 class TableViewController: UITableViewController {
 
     
-    ///редактирование записей кнопка
+    // MARK: - редактирование записей (кнопка)
     @IBAction func pushEditing(_ sender: Any) {
-        tableView.setEditing(true, animated: true)
+        tableView.setEditing(!tableView.isEditing, animated: true)
     }
     
-    ///добавление записей кнопка
+    // MARK: - добавление записей (кнопка)
     @IBAction func pushAddAction(_ sender: Any) {
         let allertController = UIAlertController(title: "Create new note", message: nil, preferredStyle: .alert)
         allertController.addTextField { (textField) in
@@ -26,7 +26,7 @@ class TableViewController: UITableViewController {
         let alertActionCancel = UIAlertAction(title: "Cancel", style: .default) { (alert) in
         }
         
-        //добавление новой записи
+        // MARK: - добавление новой записи
         let alertActionCreate = UIAlertAction(title: "Create", style: .default) { (alert) in
             
             //доступ к текстовому полю после нажатия кнопки
@@ -121,7 +121,11 @@ class TableViewController: UITableViewController {
     
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+        let from = toDoList[fromIndexPath.row]
+        toDoList.remove(at: fromIndexPath.row)
+        toDoList.insert(from, at: to.row)
+        
+        tableView.reloadData()
     }
     
 
