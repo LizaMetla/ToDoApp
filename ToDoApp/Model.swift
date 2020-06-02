@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import UserNotifications
 ///logic of app
 
 var toDoList:[[String : Any]] {
@@ -41,6 +41,13 @@ func removeItem(at index: Int) {
     toDoList.remove(at: index)
 }
 
+func moveItemInRow(fromIndex: Int, toIndex: Int) {
+    
+    let from = toDoList[fromIndex]
+    toDoList.remove(at: fromIndex)
+    toDoList.insert(from, at: toIndex)
+}
+
 func changeState(at item: Int) -> Bool {
     toDoList[item]["isCompleted"] = !(toDoList[item]["isCompleted"] as! Bool)
     
@@ -48,4 +55,12 @@ func changeState(at item: Int) -> Bool {
     return toDoList[item]["isCompleted"] as! Bool
 }
 
-
+func requesForNotifications() {
+    UNUserNotificationCenter.current().requestAuthorization(options: [.badge]) { (isEnabled, error) in
+        if isEnabled{
+            print("approved for notifications")
+        } else {
+            
+        }
+    }
+}

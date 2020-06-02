@@ -14,6 +14,11 @@ class TableViewController: UITableViewController {
     // MARK: - редактирование записей (кнопка)
     @IBAction func pushEditing(_ sender: Any) {
         tableView.setEditing(!tableView.isEditing, animated: true)
+        //после смены режима редактирования обновляем таблицу, чтобы отработали методы делегатов
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.tableView.reloadData()
+        }
+        
     }
     
     // MARK: - добавление записей (кнопка)
@@ -44,6 +49,12 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        tableView.tableFooterView = UIView()
+        tableView.backgroundColor = UIColor.systemGroupedBackground
+        tableView.layer.cornerRadius = 5
+        tableView.layer.shadowColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+  
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -75,9 +86,20 @@ class TableViewController: UITableViewController {
         
         //галочка для вида отмеченного задания
         if (currentItem["isCompleted"] as? Bool) == true {
-            cell.accessoryType = .checkmark
+            cell.imageView?.image = UIImage(named: "checkk.png")
+            
         } else {
-            cell.accessoryType = .none
+            cell.imageView?.image = UIImage(named: "circle.png")
+        }
+        
+        if tableView.isEditing{
+            //cell.textLabel?.alpha = 0.4
+            cell.textLabel?.textColor = .gray
+            cell.imageView?.alpha = 0.4
+        } else {
+            //cell.textLabel?.alpha = 1
+            cell.textLabel?.textColor = .black
+            cell.imageView?.alpha = 1
         }
 
         return cell
@@ -107,10 +129,12 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+      
+        
         if changeState(at: indexPath.row) {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+            tableView.cellForRow(at: indexPath)?.imageView?.image = UIImage(named: "checkk.png")
         } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
+            tableView.cellForRow(at: indexPath)?.imageView?.image = UIImage(named: "circle.png")
         }
         
         //обновление таблицы
@@ -121,13 +145,33 @@ class TableViewController: UITableViewController {
     
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        let from = toDoList[fromIndexPath.row]
-        toDoList.remove(at: fromIndexPath.row)
-        toDoList.insert(from, at: to.row)
+
+        
+        
+        //сохранение перемещения ячеек
+        //реализация в Model
+        moveItemInRow(fromIndex: fromIndexPath.row, toIndex: to.row)
         
         tableView.reloadData()
     }
     
+    
+    //2 функции чтобы убрать удаление в режиме редактирования
+    //оставила удаление только по свайпу
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if tableView.isEditing {
+            return .none
+        } else {
+            return .delete
+        }
+        
+        //переназначим
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
 
     /*
     // Override to support conditional rearranging of the table view.
