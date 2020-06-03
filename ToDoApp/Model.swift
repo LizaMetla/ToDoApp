@@ -8,6 +8,7 @@
 
 import Foundation
 import UserNotifications
+import UIKit
 ///logic of app
 
 var toDoList:[[String : Any]] {
@@ -35,10 +36,12 @@ var toDoList:[[String : Any]] {
 
 func addItem(nameItem: String, isCompleted: Bool = false) {
     toDoList.append(["Name" : nameItem, "isCompleted" : false])
+    setBadge()
 }
 
 func removeItem(at index: Int) {
     toDoList.remove(at: index)
+    setBadge()
 }
 
 func moveItemInRow(fromIndex: Int, toIndex: Int) {
@@ -51,16 +54,31 @@ func moveItemInRow(fromIndex: Int, toIndex: Int) {
 func changeState(at item: Int) -> Bool {
     toDoList[item]["isCompleted"] = !(toDoList[item]["isCompleted"] as! Bool)
     
+    setBadge()
+    
     //return data
     return toDoList[item]["isCompleted"] as! Bool
 }
 
+//запрашивать разреешение на уведомление в делегате
 func requesForNotifications() {
     UNUserNotificationCenter.current().requestAuthorization(options: [.badge]) { (isEnabled, error) in
         if isEnabled{
             print("approved for notifications")
         } else {
-            
+            print("disabled for notifications")
         }
     }
+}
+
+//функция для создания иконки уведомления
+func setBadge() {
+    
+    var totalBadgeNumber: Int = 0
+    for items in toDoList {
+        if (items["isCompleted"] as? Bool) == false {
+            totalBadgeNumber = totalBadgeNumber + 1
+        }
+    }
+    UIApplication.shared.applicationIconBadgeNumber = totalBadgeNumber
 }

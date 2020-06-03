@@ -36,8 +36,11 @@ class TableViewController: UITableViewController {
             
             //доступ к текстовому полю после нажатия кнопки
             let newNote = allertController.textFields![0].text
-            addItem(nameItem: newNote!)//разворачиваем значение
-            self.tableView.reloadData()
+            if newNote != "" {
+                addItem(nameItem: newNote!)//разворачиваем значение
+                self.tableView.reloadData()
+            }
+            
             
             //self чтобы обращались к самому классу
         }
